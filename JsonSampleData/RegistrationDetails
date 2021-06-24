@@ -1,0 +1,19 @@
+
+{
+   "name": "Dilshad",
+    "phoneNo": "9098989898",
+    "address": "34, South car street, Sivakasi",
+   "emailId": "dil@gmail.com",
+    "role": "ADMIN",
+    "password": "Dilshad123"
+}
+
+
+{
+   "name": "Venkatesh",
+    "phoneNo": "9098989888",
+    "address": "34, North car street, Sivakasi",
+   "emailId": "ven@gmail.com",
+    "role": "BUYER",
+    "password": "Venkatesh"
+}
