@@ -2,6 +2,8 @@ package in.dilshad.model;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -25,17 +27,18 @@ public class MemberDetails {
 	@Column("email_id")
 	private String emailId;
 
-	private String role;
+	private MemberRoleEnum role;
 
 	private String password;
 
+	@NotEmpty
 	@Column("registered_date")
 	private LocalDate registeredDate = LocalDate.now();
 
 	@Column("last_login_date")
 	private LocalDate lastLoginDate;
 
-	public MemberDetails(String name, Long phoneNo, String address, String emailId, String role, String password) {
+	public MemberDetails(String name, Long phoneNo, String address, String emailId, MemberRoleEnum role, String password) {
 		super();
 		this.name = name;
 		this.phoneNo = phoneNo;

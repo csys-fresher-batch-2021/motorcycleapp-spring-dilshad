@@ -8,10 +8,12 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import in.dilshad.model.MemberRoleEnum;
 import lombok.Data;
 
 @Data
 public class RegisterDTO {
+	//Totally there are 6 fields
 
 	@NotNull
 	@NotEmpty(message = "Member name cannot be empty")
@@ -30,8 +32,7 @@ public class RegisterDTO {
 	@Email(message = "Email should be valid")
 	private String emailId; // Unique
 
-	@NotEmpty
-	private String role;
+	private MemberRoleEnum role;
 
 	@NotNull
 	@JsonProperty(access = Access.WRITE_ONLY)

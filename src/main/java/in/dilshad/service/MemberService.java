@@ -18,9 +18,13 @@ public class MemberService {
 	@Autowired
 	MemberRepository memberRepository;
 
-	public MemberDetails register(@Valid MemberDetails memberDetails) {
+	public MemberDetails register(@Valid MemberDetails memberDetails) throws Exception {
 
 		memberValidator.validateMemberDetails(memberDetails);
+
+		// Exception from DAO layer will be handled by Controller
 		return memberRepository.save(memberDetails);
+
+
 	}
 }

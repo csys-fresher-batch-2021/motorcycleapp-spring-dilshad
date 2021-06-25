@@ -20,6 +20,8 @@
 				to give expert advice to our users on their queries, provide information regarding insurance and loan, generate original
 				test drive reviews, helps to locate Bike Dealers.
 			</p>
+			
+			<a href = "memberRegistration.jsp">Registration Form</a>
 
 		</article>
 		<article>
