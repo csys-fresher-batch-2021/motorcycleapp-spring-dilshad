@@ -1,4 +1,4 @@
-package in.dilshad.model;
+package in.dilshad.constants;
 
 public enum FuelTypeEnum {
 	PETROL("Petrol is costly", 89), ELECTRIC("Electric is economic", 32);

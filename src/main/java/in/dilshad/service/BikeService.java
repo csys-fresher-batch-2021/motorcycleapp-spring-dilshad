@@ -5,10 +5,11 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import in.dilshad.constants.BookingStatusEnum;
 import in.dilshad.dao.BikeRepository;
+import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 import in.dilshad.model.BikeStatus;
-import in.dilshad.model.BookingStatusEnum;
 
 /**
  * Bike service class accepts data form Controller. Business validation is done
@@ -40,11 +41,11 @@ public class BikeService {
 	}
 
 	/**
-	 * Returns the total number of bikes available in table.
+	 * Returns the count of bikes available in table of various categories.
 	 *
 	 * @return
 	 */
-	public Integer countBikes() {
+	public BikeCount countBikes() {
 		return bikeRepository.count();
 	}
 }

@@ -1,4 +1,4 @@
-package in.dilshad.model;
+package in.dilshad.constants;
 
 public enum MemberRoleEnum {
 

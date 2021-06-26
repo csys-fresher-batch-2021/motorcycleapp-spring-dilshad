@@ -3,6 +3,7 @@ package in.dilshad.model;
 
 import java.time.LocalDate;
 
+import in.dilshad.constants.BookingStatusEnum;
 import lombok.Data;
 import lombok.ToString;
 

@@ -1,5 +1,6 @@
 package in.dilshad.model;
 
+import in.dilshad.constants.FuelTypeEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

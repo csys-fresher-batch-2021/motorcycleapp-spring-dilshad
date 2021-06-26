@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import in.dilshad.model.FuelTypeEnum;
+import in.dilshad.constants.FuelTypeEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

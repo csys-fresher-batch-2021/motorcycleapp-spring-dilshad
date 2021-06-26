@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.dilshad.dto.BikeDetailsDTO;
 import in.dilshad.dto.Message;
+import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 import in.dilshad.model.EngineDetails;
 import in.dilshad.service.BikeService;
@@ -70,7 +71,7 @@ public class BikeController {
 	@GetMapping("count")
 	public ResponseEntity<?> count() {
 		try {
-			Integer countOfBikes = bikeService.countBikes();
+			BikeCount countOfBikes = bikeService.countBikes();
 			return new ResponseEntity<>(countOfBikes, HttpStatus.OK);
 		} catch (Exception e) {
 			Message message = new Message();
@@ -78,5 +79,6 @@ public class BikeController {
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 }
 
