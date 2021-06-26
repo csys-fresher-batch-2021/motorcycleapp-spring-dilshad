@@ -69,4 +69,15 @@ public class BikeService {
 	public List<BikeDetails> getAllBikes(boolean status) {
 		return bikeRepository.findAllByStatus(status);
 	}
+
+	/**
+	 * Passes bike number to DAO layer and returns bike specification to the service
+	 * layer.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	public BikeDetails getByBikeNumber(String bikeNumber) {
+		return bikeRepository.findByBikeNumber(bikeNumber);
+	}
 }

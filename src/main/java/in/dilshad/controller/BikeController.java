@@ -123,5 +123,25 @@ public class BikeController {
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/**
+	 * Gives the detailed bike specification for the valid Bike number.
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/TN-23-AR-3480
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	@GetMapping("{id}")
+	public ResponseEntity<?> findByBikeNumber(@PathVariable("id") String bikeNumber) {
+		try {
+			BikeDetails bikeDetails = bikeService.getByBikeNumber(bikeNumber);
+			return new ResponseEntity<>(bikeDetails, HttpStatus.OK);
+		} catch (Exception e) {
+			Message message = new Message();
+			message.setControllerMessage("Unable to fetch Bike Details");
+			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
 

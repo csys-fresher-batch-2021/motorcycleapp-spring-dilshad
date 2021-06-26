@@ -126,6 +126,20 @@ public class BikeRepository {
 			return bikeDetails;
 		});
 		return bikeList;
+	}
 
+	/**
+	 * Fetches the bike specification from the database whose status is active for
+	 * the valid bike number.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	public BikeDetails findByBikeNumber(String bikeNumber) {
+		String sql = "SELECT bike_number, manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details WHERE bike_number = ? AND market_status != 'BOOKED' AND verification_status = true";
+		Object[] param = {bikeNumber};
+		BikeDetails bikeDetails = null;
+		bikeDetails = jdbcTemplate.queryForObject(sql, new BikeRowMapper(), param);
+		return bikeDetails;
 	}
 }
