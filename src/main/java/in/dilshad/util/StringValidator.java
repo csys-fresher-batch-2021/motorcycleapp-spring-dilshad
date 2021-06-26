@@ -3,6 +3,12 @@ package in.dilshad.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * All sort of String validation methods are present in this class.
+ *
+ * @author dils2654
+ *
+ */
 public class StringValidator {
 
 	private StringValidator() {
@@ -12,7 +18,7 @@ public class StringValidator {
 	/**
 	 * Method overloading is deployed. Checks the presence of null character and
 	 * whitespace.
-	 * 
+	 *
 	 * @param inputString
 	 * @return
 	 */
@@ -27,7 +33,7 @@ public class StringValidator {
 	/**
 	 * Checks the presence of null character and whitespace. Check if length of the
 	 * string is less than or equal to maximum value.
-	 * 
+	 *
 	 * @param inputString
 	 * @param max
 	 * @return
@@ -44,7 +50,7 @@ public class StringValidator {
 	 * Checks the presence of null character and whitespace. Check if length of the
 	 * string is less than or equal to maximum value. Check if length of the string
 	 * is greater than or equal to minimum value.
-	 * 
+	 *
 	 * @param inputString
 	 * @param max
 	 * @param min
@@ -60,37 +66,33 @@ public class StringValidator {
 
 	/**
 	 * Checks for the presence of Special Character.
-	 * 
+	 *
 	 * @param inputString
 	 * @return
 	 */
 	public static boolean isSpecialCharPresent(String inputString) {
-		if (isValidString(inputString)) {
-			Pattern pattern = Pattern.compile("[^a-zA-Z0-9' ']");
-			Matcher matcher = pattern.matcher(inputString.trim());
-			return matcher.find();
-		} else
+		if (isValidString(inputString))
+			return Pattern.matches("[^a-zA-Z0-9' ']", inputString);
+		else
 			return false;
 	}
 
 	/**
 	 * Checks the presence of numbers in the string
-	 * 
+	 *
 	 * @param inputString
 	 * @return
 	 */
 	public static boolean isNumberPresent(String inputString) {
-		if (isValidString(inputString)) {
-			Pattern pattern = Pattern.compile("[0-9]");
-			Matcher matcher = pattern.matcher(inputString);
-			return matcher.find();
-		} else
+		if (isValidString(inputString))
+			return Pattern.matches("[0-9]", inputString);
+		else
 			return false;
 	}
 
 	/**
 	 * Checks the presence of Alphanumeric character only.
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */

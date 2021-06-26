@@ -9,6 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * To transfer List of messages from back end to front end.
+ *
+ * @author dils2654
+ *
+ */
 @JsonInclude(value = Include.NON_NULL)
 @Data
 @AllArgsConstructor

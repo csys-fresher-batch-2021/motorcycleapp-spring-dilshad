@@ -15,6 +15,12 @@ import in.dilshad.dto.RegisterDTO;
 import in.dilshad.model.MemberDetails;
 import in.dilshad.service.MemberService;
 
+/**
+ * Authorization - for member registration, login and logout functions.
+ *
+ * @author dils2654
+ *
+ */
 @RestController
 @RequestMapping("motorcycleapp/v1/auth/member")
 public class AuthController {
@@ -22,7 +28,14 @@ public class AuthController {
 	@Autowired
 	MemberService memberService;
 
-	// http://localhost:9000/motorcycleapp/v1/auth/member/registration
+	/**
+	 * Accepts member details of ADMIN & SELLER and passes it to service layer.
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/member/registration
+	 *
+	 * @param registerdto
+	 * @return
+	 */
 	@PostMapping("registration")
 	public ResponseEntity<?> memberRegistration(@Valid @RequestBody RegisterDTO registerdto) {
 

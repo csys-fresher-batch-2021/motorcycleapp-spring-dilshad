@@ -19,10 +19,22 @@ import in.dilshad.dto.Message;
 import in.dilshad.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * To handle Hibernate Validation Exception.
+ *
+ * @author dils2654
+ *
+ */
 @Slf4j
 @ControllerAdvice
 public class RestErrorHandler {
 
+	/**
+	 * To handle ValidationException
+	 *
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
@@ -32,15 +44,25 @@ public class RestErrorHandler {
 		return message;
 	}
 
+	/**
+	 * To handle ConstraintViolationException.
+	 *
+	 * @param e
+	 * @return
+	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	ResponseEntity<Message> handleConstraintViolationException(ConstraintViolationException e) {
-		Message message = new Message(e.getMessage());
-		// return new ResponseEntity<>("not valid due to validation error: " +
-		// e.getMessage(), HttpStatus.BAD_REQUEST);
+		Message message = new Message("ConstraintViolationException: " + e.getMessage());
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * To Handle MethodArgumentNotValidException
+	 *
+	 * @param e
+	 * @return
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	ResponseEntity<Message> handleConstraintViolationException2(MethodArgumentNotValidException e) {
@@ -51,8 +73,6 @@ public class RestErrorHandler {
 		}
 		Message message = new Message();
 		message.setErrors(messages);
-		// return new ResponseEntity<>("not valid due to validation error: " +
-		// e.getMessage(), HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 }

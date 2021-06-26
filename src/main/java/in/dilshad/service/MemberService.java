@@ -9,6 +9,12 @@ import in.dilshad.dao.MemberRepository;
 import in.dilshad.model.MemberDetails;
 import in.dilshad.validation.MemberValidator;
 
+/**
+ * Manages the member details.
+ *
+ * @author dils2654
+ *
+ */
 @Service
 public class MemberService {
 
@@ -18,6 +24,13 @@ public class MemberService {
 	@Autowired
 	MemberRepository memberRepository;
 
+	/**
+	 * Accepts member details and passes it to DAO after Validation.
+	 *
+	 * @param memberDetails
+	 * @return
+	 * @throws Exception
+	 */
 	public MemberDetails register(@Valid MemberDetails memberDetails) throws Exception {
 
 		memberValidator.validateMemberDetails(memberDetails);

@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import in.dilshad.model.MemberRoleEnum;
 import lombok.Data;
 
+/**
+ * To transfer member details between front end and back end.
+ *
+ * @author dils2654
+ *
+ */
 @Data
 public class RegisterDTO {
 	//Totally there are 6 fields

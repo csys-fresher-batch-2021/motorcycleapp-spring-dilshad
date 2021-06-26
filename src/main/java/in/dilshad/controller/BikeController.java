@@ -17,6 +17,12 @@ import in.dilshad.model.BikeDetails;
 import in.dilshad.model.EngineDetails;
 import in.dilshad.service.BikeService;
 
+/**
+ * Bike Controller class is serves various features for manipulation of bikes.
+ *
+ * @author dils2654
+ *
+ */
 @RestController
 @RequestMapping("motorcycleapp/v1/auth/bike")
 public class BikeController {
@@ -24,6 +30,14 @@ public class BikeController {
 	@Autowired
 	BikeService bikeService;
 
+	/**
+	 * Accepts bike specifications and passes it to service layer
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/add
+	 *
+	 * @param bikeDetailsDTO
+	 * @return
+	 */
 	@PostMapping("add")
 	public ResponseEntity<?> addBike(@Valid @RequestBody BikeDetailsDTO bikeDetailsDTO) {
 
@@ -45,6 +59,14 @@ public class BikeController {
 		}
 	}
 
+	/**
+	 * Gives the total number of bikes available (irrespective of status) in the
+	 * database table
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/count
+	 *
+	 * @return
+	 */
 	@GetMapping("count")
 	public ResponseEntity<?> count() {
 		try {

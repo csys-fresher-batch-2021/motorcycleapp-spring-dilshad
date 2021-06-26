@@ -8,6 +8,13 @@ import in.dilshad.model.FuelTypeEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * To transfer Bike Specification for front end to back end. Hibernate
+ * Validation is performed.
+ *
+ * @author dils2654
+ *
+ */
 @Data
 @NoArgsConstructor
 public class BikeDetailsDTO {
