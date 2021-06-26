@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +48,9 @@ public class BikeController {
 
 		EngineDetails engineDetails = new EngineDetails(bikeDetailsDTO.getOdometerReading(),
 				bikeDetailsDTO.getFuelType(), bikeDetailsDTO.getManufactureYear());
-		BikeDetails bikeDetails = new BikeDetails(bikeDetailsDTO.getBikeNumber(), bikeDetailsDTO.getBikeManufacturer(), bikeDetailsDTO.getBikeModel(), bikeDetailsDTO.getBikeColor(), bikeDetailsDTO.getBikePrice(), engineDetails);
+		BikeDetails bikeDetails = new BikeDetails(bikeDetailsDTO.getBikeNumber(), bikeDetailsDTO.getBikeManufacturer(),
+				bikeDetailsDTO.getBikeModel(), bikeDetailsDTO.getBikeColor(), bikeDetailsDTO.getBikePrice(),
+				engineDetails);
 
 		try {
 			bikeService.addBike(bikeDetails);
@@ -143,5 +146,33 @@ public class BikeController {
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-}
 
+	/**
+	 * Remove bike from when valid plate number is given.
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/TN-23-AR-3480
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	@DeleteMapping("{id}")
+	public ResponseEntity<?> remove(@PathVariable("id") String bikeNumber) {
+		try {
+			boolean isRemoved = bikeService.removeBike(bikeNumber);
+			if (isRemoved) {
+				Message message = new Message();
+				message.setInfoMessage("Successfully removed the bike: " + bikeNumber);
+				return new ResponseEntity<>(message, HttpStatus.OK);
+			} else {
+				Message message = new Message();
+				message.setControllerMessage("Bike number: " + bikeNumber + " not found");
+				return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+			Message message = new Message();
+			message.setControllerMessage("Unable to process your request");
+			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+}

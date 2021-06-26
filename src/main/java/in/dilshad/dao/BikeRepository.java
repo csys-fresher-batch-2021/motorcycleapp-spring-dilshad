@@ -110,4 +110,18 @@ public class BikeRepository {
 		bikeDetails = jdbcTemplate.queryForObject(sql, new BikeRowMapper(), bikeNumber);
 		return bikeDetails;
 	}
+
+	/**
+	 * Gets bike number and removes the corresponding record for the when valid bike
+	 * number is provided. Returns true when valid record is removed. Returns false
+	 * when record is not removed.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	public boolean remove(String bikeNumber) {
+		String sql = "DELETE FROM motorcycle_details WHERE bike_number = ?";
+		int rows = jdbcTemplate.update(sql, bikeNumber);
+		return rows == 1 ? true : false;
+	}
 }

@@ -80,4 +80,15 @@ public class BikeService {
 	public BikeDetails getByBikeNumber(String bikeNumber) {
 		return bikeRepository.findByBikeNumber(bikeNumber);
 	}
+
+	/**
+	 * Passes bike number to DAO layer and returns true when success and false when
+	 * invalid bike number is given.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	public boolean removeBike(String bikeNumber) {
+		return bikeRepository.remove(bikeNumber);
+	}
 }
