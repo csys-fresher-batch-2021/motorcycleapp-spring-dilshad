@@ -1,11 +1,14 @@
 package in.dilshad.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,6 +98,28 @@ public class BikeController {
 		} catch (Exception e) {
 			Message message = new Message();
 			message.setControllerMessage("Internal error");
+			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Gives the list of bikes based on administrator verification status. If
+	 * (active/true) - verified bike list. else(active/false) - list of unverified
+	 * bike list.
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/active/true
+	 *
+	 * @param status
+	 * @return
+	 */
+	@GetMapping("active/{i}")
+	public ResponseEntity<?> getBikeList(@PathVariable("i") Boolean status) {
+		try {
+			List<BikeDetails> bikeList = bikeService.getAllBikes(status);
+			return new ResponseEntity<>(bikeList, HttpStatus.OK);
+		} catch (Exception e) {
+			Message message = new Message();
+			message.setControllerMessage("Unable to fetch Bike Details");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

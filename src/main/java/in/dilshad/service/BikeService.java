@@ -1,6 +1,7 @@
 package in.dilshad.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,15 @@ public class BikeService {
 	public float getBikeAssets() {
 		return bikeRepository.getAsset();
 
+	}
+
+	/**
+	 * Passes the status as argument and gets the list of bikes
+	 *
+	 * @param status
+	 * @return
+	 */
+	public List<BikeDetails> getAllBikes(boolean status) {
+		return bikeRepository.findAllByStatus(status);
 	}
 }
