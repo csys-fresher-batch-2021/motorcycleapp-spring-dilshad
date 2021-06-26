@@ -25,4 +25,7 @@ public class Message {
 
 	private Map<String, String> errors;
 
+	private String controllerMessage;
 }
+
+

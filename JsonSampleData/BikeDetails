@@ -1,0 +1,10 @@
+{
+    "bikeNumber": "TN-89-ER-3480",    
+    "bikeManufacturer": "TVS",
+    "bikeModel": "Victor",
+    "bikeColor": "red",
+    "bikePrice": 45000,
+    "odometerReading": 42345,
+    "fuelType": "PETROL",
+    "manufactureYear": 2001
+}
