@@ -14,19 +14,20 @@ public class BikeRepository {
 
 	public boolean save(BikeDetails bikeDetails) {
 		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer, model, color, price, odometer_reading, fuel_type, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = { bikeDetails.getBikeNumber(), 
-				bikeDetails.getBikeManufacturer(), 
-				bikeDetails.getBikeModel(),
-				bikeDetails.getBikeColor(), 
-				bikeDetails.getBikePrice(),
+		Object[] params = { bikeDetails.getBikeNumber(), bikeDetails.getBikeManufacturer(), bikeDetails.getBikeModel(),
+				bikeDetails.getBikeColor(), bikeDetails.getBikePrice(),
 				bikeDetails.getEngineDetails().getOdometerReading(),
 				bikeDetails.getEngineDetails().getFuelType().toString(),
-				bikeDetails.getEngineDetails().getManufactureYear(), 
-				bikeDetails.getBikeStatus().getAddedDate(),
+				bikeDetails.getEngineDetails().getManufactureYear(), bikeDetails.getBikeStatus().getAddedDate(),
 				bikeDetails.getBikeStatus().isAdminVerified(),
 				bikeDetails.getBikeStatus().getBookingStatus().toString() };
 
 		int rows = jdbcTemplate.update(sql, params);
 		return rows == 1;
+	}
+
+	public Integer count() {
+		String sql = "SELECT COUNT(bike_number) FROM motorcycle_details";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 }

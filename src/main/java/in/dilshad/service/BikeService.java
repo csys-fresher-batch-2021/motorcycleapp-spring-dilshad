@@ -24,6 +24,9 @@ public class BikeService {
 		bikeDetails.setBikeStatus(bikeStatus);
 
 		return bikeRepository.save(bikeDetails);
-
+	}
+	
+	public Integer countBikes() {
+		return bikeRepository.count();
 	}
 }
