@@ -2,6 +2,7 @@ package in.dilshad.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -68,5 +69,15 @@ public class BikeRepository {
 		bikeCount.setSoldBike(jdbcTemplate.queryForObject(sql5, Integer.class));
 
 		return bikeCount;
+	}
+
+	/**
+	 * Get the sum of total amount of verified active bikes.
+	 *
+	 * @return
+	 */
+	public float getAsset() throws DbActionExecutionException {
+		String sql = "SELECT SUM(price) FROM motorcycle_details WHERE market_status != 'BOOKED' AND verification_status = 'true'";
+		return jdbcTemplate.queryForObject(sql, Float.class);
 	}
 }

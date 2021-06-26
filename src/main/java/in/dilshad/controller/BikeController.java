@@ -80,5 +80,23 @@ public class BikeController {
 		}
 	}
 
+	/**
+	 * Returns the asset value of current active bikes.
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/asset
+	 *
+	 * @return
+	 */
+	@GetMapping("asset")
+	public ResponseEntity<?> getAsset() {
+		try {
+			Float netAmount = bikeService.getBikeAssets();
+			return new ResponseEntity<>(netAmount, HttpStatus.OK);
+		} catch (Exception e) {
+			Message message = new Message();
+			message.setControllerMessage("Internal error");
+			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
 

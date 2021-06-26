@@ -48,4 +48,14 @@ public class BikeService {
 	public BikeCount countBikes() {
 		return bikeRepository.count();
 	}
+
+	/**
+	 * Get the asset value from database.
+	 *
+	 * @return
+	 */
+	public float getBikeAssets() {
+		return bikeRepository.getAsset();
+
+	}
 }
