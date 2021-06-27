@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.dilshad.constants.BookingStatusEnum;
-import in.dilshad.dao.BikeRepository;
+import in.dilshad.dao.IBikeRepository;
 import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 import in.dilshad.model.BikeStatus;
@@ -23,7 +23,7 @@ import in.dilshad.model.BikeStatus;
 public class BikeService {
 
 	@Autowired
-	BikeRepository bikeRepository;
+	IBikeRepository bikeRepository;
 
 	/**
 	 * It accepts basic bike details and adds few default values and passes to DAO

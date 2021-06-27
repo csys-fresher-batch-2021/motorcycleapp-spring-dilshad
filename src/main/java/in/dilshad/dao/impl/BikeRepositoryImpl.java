@@ -1,4 +1,4 @@
-package in.dilshad.dao;
+package in.dilshad.dao.impl;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import org.springframework.data.relational.core.conversion.DbActionExecutionExce
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import in.dilshad.dao.BikeRowMapper;
+import in.dilshad.dao.IBikeRepository;
 import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 
@@ -18,7 +20,7 @@ import in.dilshad.model.BikeDetails;
  *
  */
 @Repository
-public class BikeRepository {
+public class BikeRepositoryImpl implements IBikeRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -29,6 +31,7 @@ public class BikeRepository {
 	 * @param bikeDetails
 	 * @return
 	 */
+	@Override
 	public boolean save(BikeDetails bikeDetails) {
 		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer, model, color, price, odometer_reading, fuel_type, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { bikeDetails.getBikeNumber(), bikeDetails.getBikeManufacturer(), bikeDetails.getBikeModel(),
@@ -51,6 +54,7 @@ public class BikeRepository {
 	 *
 	 * @return
 	 */
+	@Override
 	public BikeCount count() throws DataAccessException {
 		BikeCount bikeCount = new BikeCount();
 
@@ -77,6 +81,7 @@ public class BikeRepository {
 	 *
 	 * @return
 	 */
+	@Override
 	public float getAsset() throws DbActionExecutionException {
 		String sql = "SELECT SUM(price) FROM motorcycle_details WHERE market_status != 'BOOKED' AND verification_status = 'true'";
 		return jdbcTemplate.queryForObject(sql, Float.class);
@@ -90,6 +95,7 @@ public class BikeRepository {
 	 * @param status
 	 * @return
 	 */
+	@Override
 	public List<BikeDetails> findAllByStatus(boolean status) {
 
 		String sql = "SELECT bike_number, manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details WHERE verification_status = ? AND market_status != 'BOOKED'";
@@ -104,6 +110,7 @@ public class BikeRepository {
 	 * @param bikeNumber
 	 * @return
 	 */
+	@Override
 	public BikeDetails findByBikeNumber(String bikeNumber) {
 		String sql = "SELECT bike_number, manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details WHERE bike_number = ? AND market_status != 'BOOKED' AND verification_status = true";
 		BikeDetails bikeDetails = null;
@@ -119,6 +126,7 @@ public class BikeRepository {
 	 * @param bikeNumber
 	 * @return
 	 */
+	@Override
 	public boolean remove(String bikeNumber) {
 		String sql = "DELETE FROM motorcycle_details WHERE bike_number = ?";
 		int rows = jdbcTemplate.update(sql, bikeNumber);
@@ -133,6 +141,7 @@ public class BikeRepository {
 	 * @param revisedPrice
 	 * @return
 	 */
+	@Override
 	public boolean updatePrice(String bikeNumber, float revisedPrice) {
 		String sql = "UPDATE motorcycle_details SET price = ? WHERE bike_number = ?";
 		int rows = jdbcTemplate.update(sql, revisedPrice, bikeNumber);
