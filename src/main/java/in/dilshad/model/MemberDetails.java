@@ -10,8 +10,10 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import in.dilshad.constants.MemberRoleEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table(value = "member_details")
 public class MemberDetails {
 
@@ -26,7 +28,7 @@ public class MemberDetails {
 	private String address;
 
 	@Column("email_id")
-	private String emailId;
+	private String email;
 
 	private MemberRoleEnum role;
 
@@ -44,7 +46,14 @@ public class MemberDetails {
 		this.name = name;
 		this.phoneNo = phoneNo;
 		this.address = address;
-		this.emailId = emailId;
+		this.email = emailId;
+		this.role = role;
+		this.password = password;
+	}
+
+	public MemberDetails(String emailId, MemberRoleEnum role, String password) {
+		super();
+		this.email = emailId;
 		this.role = role;
 		this.password = password;
 	}

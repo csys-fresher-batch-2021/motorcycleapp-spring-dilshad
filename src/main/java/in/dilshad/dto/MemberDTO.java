@@ -18,7 +18,7 @@ import lombok.Data;
  *
  */
 @Data
-public class RegisterDTO {
+public class MemberDTO {
 	//Totally there are 6 fields
 
 	@NotNull
@@ -42,7 +42,7 @@ public class RegisterDTO {
 
 	@NotNull
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@Size(min = 7, max = 30, message = "Password must be greater than 7 characters & must not be too long")
+	@Size(min = 7, max = 30, message = "Password	 must be greater than 7 characters & must not be too long")
 	private String password;
 
 }

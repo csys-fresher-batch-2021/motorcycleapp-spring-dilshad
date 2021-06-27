@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.dilshad.dto.MemberDTO;
 import in.dilshad.dto.Message;
-import in.dilshad.dto.RegisterDTO;
 import in.dilshad.model.MemberDetails;
 import in.dilshad.service.MemberService;
 
@@ -37,7 +37,7 @@ public class AuthController {
 	 * @return
 	 */
 	@PostMapping("registration")
-	public ResponseEntity<?> memberRegistration(@Valid @RequestBody RegisterDTO registerdto) {
+	public ResponseEntity<?> memberRegistration(@Valid @RequestBody MemberDTO registerdto) {
 
 		// DTO to Model conversion
 		MemberDetails memberDetails = new MemberDetails(registerdto.getName(), registerdto.getPhoneNo(),
@@ -52,6 +52,29 @@ public class AuthController {
 			message.setErrorMessage(e.getCause().getClass().toGenericString());
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
+	}
 
+	/**
+	 * Login feature: When valid email & password is provided - it returns the
+	 * corresponding member details, else exception is thrown by the service layer
+	 * which is handled.
+	 *
+	 * url: http://localhost:9000/motorcycleapp/v1/auth/member/login
+	 *
+	 * @param login
+	 * @return
+	 */
+	@PostMapping("login")
+	public ResponseEntity<?> login(@RequestBody MemberDTO login) {
+		try {
+			MemberDetails memberDetails = new MemberDetails(login.getEmailId(), login.getRole(), login.getPassword());
+			MemberDetails details = memberService.login(memberDetails);
+			return new ResponseEntity<>(details, HttpStatus.OK);
+		} catch (Exception e) {
+			Message message = new Message();
+			message.setErrorMessage("Invalid email/password");
+			return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+
+		}
 	}
 }
