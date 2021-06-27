@@ -124,4 +124,18 @@ public class BikeRepository {
 		int rows = jdbcTemplate.update(sql, bikeNumber);
 		return rows == 1 ? true : false;
 	}
+
+	/**
+	 * Returns true when valid bikes number is passed and updates the price for the
+	 * given bike number. Return false when bike number not present in table.
+	 *
+	 * @param bikeNumber
+	 * @param revisedPrice
+	 * @return
+	 */
+	public boolean updatePrice(String bikeNumber, float revisedPrice) {
+		String sql = "UPDATE motorcycle_details SET price = ? WHERE bike_number = ?";
+		int rows = jdbcTemplate.update(sql, revisedPrice, bikeNumber);
+		return rows == 1 ? true : false;
+	}
 }

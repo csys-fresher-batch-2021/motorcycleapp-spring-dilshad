@@ -91,4 +91,18 @@ public class BikeService {
 	public boolean removeBike(String bikeNumber) {
 		return bikeRepository.remove(bikeNumber);
 	}
+
+	/**
+	 * Give the bike number & price to the DAO layer. Throws exception when bike
+	 * number is not found in database.
+	 *
+	 * @param bikeNumber
+	 * @param revisedPrice
+	 * @throws Exception
+	 */
+	public void updatePrice(String bikeNumber, float revisedPrice) throws Exception {
+		boolean isUpdated = bikeRepository.updatePrice(bikeNumber, revisedPrice);
+		if (!isUpdated)
+			throw new Exception();
+	}
 }

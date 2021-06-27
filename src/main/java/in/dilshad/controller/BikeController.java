@@ -3,12 +3,14 @@ package in.dilshad.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -141,6 +143,7 @@ public class BikeController {
 			BikeDetails bikeDetails = bikeService.getByBikeNumber(bikeNumber);
 			return new ResponseEntity<>(bikeDetails, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Message message = new Message();
 			message.setControllerMessage("Unable to fetch Bike Details");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -172,6 +175,31 @@ public class BikeController {
 			Message message = new Message();
 			message.setControllerMessage("Unable to process your request");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Accepts bike number and revised price and passes it to service layer.
+	 *
+	 * url:
+	 * http://localhost:9000/motorcycleapp/v1/auth/bike/TN-89-ER-3480/update-price
+	 *
+	 * @param bikeNumber
+	 * @param bikeDetailsDTO
+	 * @return
+	 */
+	@PatchMapping("{bikeNumber}/update-price")
+	public ResponseEntity<?> updatePrice(@PathVariable("bikeNumber") String bikeNumber,
+			@RequestBody BikeDetailsDTO bikeDetailsDTO) {
+		try {
+			bikeService.updatePrice(bikeNumber, bikeDetailsDTO.getBikePrice());
+			Message message = new Message();
+			message.setInfoMessage("Successfully updated the price");
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		} catch (Exception e) {
+			Message message = new Message();
+			message.setControllerMessage(" Bike number not found");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
 
 	}
