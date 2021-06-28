@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import in.dilshad.constants.MemberRoleEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * To transfer member details between front end and back end.
@@ -18,8 +19,9 @@ import lombok.Data;
  *
  */
 @Data
+@NoArgsConstructor
 public class MemberDTO {
-	//Totally there are 6 fields
+	// Totally there are 6 fields
 
 	@NotNull
 	@NotEmpty(message = "Member name cannot be empty")
@@ -36,13 +38,13 @@ public class MemberDTO {
 	@NotNull
 	@NotEmpty(message = "Email cannot be empty")
 	@Email(message = "Email should be valid")
-	private String emailId; // Unique
+	private String email; // Unique
 
 	private MemberRoleEnum role;
 
 	@NotNull
-	@JsonProperty(access = Access.WRITE_ONLY)
-	@Size(min = 7, max = 30, message = "Password	 must be greater than 7 characters & must not be too long")
+	// @JsonProperty(access = Access.WRITE_ONLY)
+	@Size(min = 7, max = 30, message = "Password must be greater than 7 characters & must not be too long")
 	private String password;
 
 }

@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import in.dilshad.dto.MemberDetailsDTO;
+import in.dilshad.dto.MemberDTO;
 import in.dilshad.service.MemberService;
 
 @RunWith(SpringRunner.class)
@@ -30,39 +30,27 @@ class WebLayerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-
-	@MockBean
-	private MemberService userServiceMock;
-
-	@InjectMocks
-	AuthController authController;
-
-	@SuppressWarnings("deprecation")
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-	}
-
 	@Test
 	public void testValidLogin() throws Exception {
-		MemberDetailsDTO memberObj = new MemberDetailsDTO();
+		System.out.println("Inside test case - Valid");
+		MemberDTO memberObj = new MemberDTO();
 
-		memberObj.setEmailId("dilshad@gmail.com");
-		memberObj.setPassword("pass123#");
+		memberObj.setEmail("dil@gmail.com");
+		memberObj.setPassword("Dilshad123");
 
 		String memberJson = new ObjectMapper().writeValueAsString(memberObj);
 
 		mockMvc.perform(
 				post("/motorcycleapp/v1/auth/member/login").contentType(MediaType.APPLICATION_JSON)
 				.content(memberJson))
-		.andExpect(status().isOk()).andExpect(jsonPath("$.emailId").value("dilshad@gmail.com"))
-		.andExpect(jsonPath("$.password").value("pass123#"));
+				.andExpect(status().isOk()).andExpect(jsonPath("$.email").value("dil@gmail.com"))
+				.andExpect(jsonPath("$.password").value("Dilshad123"));
 	}
 
 	@Test
 	public void testInvalidLogin() throws Exception {
-		MemberDetailsDTO memberObj = new MemberDetailsDTO();
-		memberObj.setEmailId("dilshad@gmail.com");
+		MemberDTO memberObj = new MemberDTO();
+		memberObj.setEmail("dilshad@gmail.com");
 		memberObj.setPassword("pass123");
 		String memberJson = new ObjectMapper().writeValueAsString(memberObj);
 		mockMvc.perform(

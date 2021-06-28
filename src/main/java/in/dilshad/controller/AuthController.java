@@ -41,7 +41,7 @@ public class AuthController {
 
 		// DTO to Model conversion
 		MemberDetails memberDetails = new MemberDetails(registerdto.getName(), registerdto.getPhoneNo(),
-				registerdto.getAddress(), registerdto.getEmailId(), registerdto.getRole(), registerdto.getPassword());
+				registerdto.getAddress(), registerdto.getEmail(), registerdto.getRole(), registerdto.getPassword());
 
 		try {
 			MemberDetails register = memberService.register(memberDetails);
@@ -67,8 +67,10 @@ public class AuthController {
 	@PostMapping("login")
 	public ResponseEntity<?> login(@RequestBody MemberDTO login) {
 		try {
-			MemberDetails memberDetails = new MemberDetails(login.getEmailId(), login.getRole(), login.getPassword());
-			MemberDetails details = memberService.login(memberDetails);
+			// DTO to Model conversion
+			MemberDetails memberDetails = new MemberDetails(login.getEmail(), login.getRole(), login.getPassword());
+
+			MemberDetails details = memberService.login(memberDetails); // MemberDTO
 			return new ResponseEntity<>(details, HttpStatus.OK);
 		} catch (Exception e) {
 			Message message = new Message();
@@ -76,5 +78,6 @@ public class AuthController {
 			return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
 
 		}
+
 	}
 }
