@@ -35,12 +35,14 @@ public class MemberDetails {
 	private String password;
 
 	@NotEmpty
+
 	@Column("registered_date")
 	private LocalDate registeredDate = LocalDate.now();
 
 	@Column("last_login_date")
 	private LocalDate lastLoginDate;
 
+	// During Registration
 	public MemberDetails(String name, Long phoneNo, String address, String emailId, MemberRoleEnum role, String password) {
 		super();
 		this.name = name;
@@ -51,6 +53,7 @@ public class MemberDetails {
 		this.password = password;
 	}
 
+	// During login
 	public MemberDetails(String emailId, MemberRoleEnum role, String password) {
 		super();
 		this.email = emailId;

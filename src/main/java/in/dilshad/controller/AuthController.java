@@ -65,18 +65,17 @@ public class AuthController {
 	 * @return
 	 */
 	@PostMapping("login")
-	public ResponseEntity<?> login(@RequestBody MemberDTO login) {
-		try {
-			// DTO to Model conversion
-			MemberDetails memberDetails = new MemberDetails(login.getEmail(), login.getRole(), login.getPassword());
+	public ResponseEntity<?> login1(@RequestBody MemberDTO loginDto) {
 
-			MemberDetails details = memberService.login(memberDetails); // MemberDTO
+		try {
+			MemberDetails memberDetails = new MemberDetails(loginDto.getEmail(), loginDto.getRole(),
+					loginDto.getPassword());
+			MemberDetails details = memberService.login(memberDetails);
 			return new ResponseEntity<>(details, HttpStatus.OK);
 		} catch (Exception e) {
 			Message message = new Message();
-			message.setErrorMessage("Invalid email/password");
+			message.setControllerMessage(e.getMessage());
 			return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
-
 		}
 
 	}

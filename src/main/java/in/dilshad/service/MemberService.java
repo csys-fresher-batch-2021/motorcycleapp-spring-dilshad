@@ -1,9 +1,11 @@
 package in.dilshad.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import in.dilshad.dao.MemberRepository;
+import in.dilshad.exceptions.InvalidLoginException;
 import in.dilshad.model.MemberDetails;
 import in.dilshad.validation.MemberValidator;
 
@@ -41,15 +43,14 @@ public class MemberService {
 	 * When valid email & password is provided - it returns the corresponding member
 	 * details, else exception is thrown.
 	 *
-	 * @param credentials
+	 * @param memberDTO
 	 * @return
 	 */
-	public MemberDetails login(MemberDetails credentials) {
-		MemberDetails memberDetails = null;
-		memberDetails = memberRepository.findByEmailAndPassword(credentials.getEmail(), credentials.getPassword())
-				.orElse(null);
-		if (memberDetails == null)
-			throw new IllegalArgumentException();
-		return memberDetails;
+	public MemberDetails login(MemberDetails memberDetails) {
+		MemberDetails details = memberRepository
+				.findByEmailAndPassword(memberDetails.getEmail(), memberDetails.getPassword()).orElse(null);
+		if (details == null)
+			throw new InvalidLoginException("Invalid email/password");
+		return details;
 	}
 }
