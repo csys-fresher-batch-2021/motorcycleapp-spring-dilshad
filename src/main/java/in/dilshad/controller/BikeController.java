@@ -141,11 +141,13 @@ public class BikeController {
 	public ResponseEntity<?> findByBikeNumber(@PathVariable("id") String bikeNumber) {
 		try {
 			BikeDetails bikeDetails = bikeService.getByBikeNumber(bikeNumber);
+			System.out.println(bikeDetails);
+
 			return new ResponseEntity<>(bikeDetails, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Message message = new Message();
-			message.setControllerMessage("Unable to fetch Bike Details");
+			message.setErrorMessage("Unable to fetch Bike Details");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

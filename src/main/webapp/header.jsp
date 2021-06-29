@@ -14,6 +14,7 @@
 	crossorigin="anonymous"></script>
 <script src="assets/js/axios.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <%
 String loggedInUsername = (String) session.getAttribute("LOGGED_IN_ADMIN");

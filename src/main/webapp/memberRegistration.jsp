@@ -53,7 +53,7 @@
 			<br />
 			<div class="form">
 				<label for="address">
-					<strong>Enter Residental Address </strong>
+					<strong>Enter Residential Address </strong>
 					<span class="required"> *</span>
 				</label>
 				<textarea id="address" minlength="10" maxlength="200" name="address" required autocomplete="on" autofocus placeholder="Enter Address">
@@ -68,7 +68,7 @@
 				</label>
 				<input type="email" id="emailId" name="emailId" required autofocus placeholder="Enter Email ID">
 			</div>
-			<br />
+			<br/>
 
 
 			<div class="form">
@@ -118,7 +118,7 @@
 					"name": name,
 					"phoneNo": phoneNo,
 					"address": address,
-					"emailId": emailId,
+					"email": emailId,
 					"role": role,
 					"password": password
 				};
