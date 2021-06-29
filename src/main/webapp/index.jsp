@@ -13,7 +13,10 @@
 				Motorcycle Show Room</h1>
 		</header>
 		<a href="memberRegistration.jsp">Registration Form</a><br /> <a
-			href="displayByBikeNo.jsp">Get bike details by bike no.</a>
+			href="displayByBikeNo.jsp">Get bike details by bike no.</a><br/>
+			<a href="listActiveBikes.html">Get list of available bikes</a>
+			
+			
 		<article class="column">
 			<h3>About us</h3>
 			<p>
