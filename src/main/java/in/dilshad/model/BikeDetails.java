@@ -23,11 +23,13 @@ public class BikeDetails {
 
 	private BikeStatus bikeStatus;
 
-	public BikeDetails(String bikeNumber, String bikeManufacturer, String bikeModel, String bikeColor, float bikePrice,
+	private Integer manufacturerId;
+
+	public BikeDetails(String bikeNumber, Integer manufacturerId, String bikeModel, String bikeColor, float bikePrice,
 			EngineDetails engineDetails) {
 		super();
 		this.bikeNumber = bikeNumber;
-		this.bikeManufacturer = bikeManufacturer;
+		this.manufacturerId = manufacturerId;
 		this.bikeModel = bikeModel;
 		this.bikeColor = bikeColor;
 		this.bikePrice = bikePrice;

@@ -33,8 +33,8 @@ public class BikeRepositoryImpl implements IBikeRepository {
 	 */
 	@Override
 	public boolean save(BikeDetails bikeDetails) {
-		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer, model, color, price, odometer_reading, fuel_type, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = { bikeDetails.getBikeNumber(), bikeDetails.getBikeManufacturer(), bikeDetails.getBikeModel(),
+		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer_id, model, color, price, odometer_reading, fuel_type, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = { bikeDetails.getBikeNumber(), bikeDetails.getManufacturerId(), bikeDetails.getBikeModel(),
 				bikeDetails.getBikeColor(), bikeDetails.getBikePrice(),
 				bikeDetails.getEngineDetails().getOdometerReading(),
 				bikeDetails.getEngineDetails().getFuelType().toString(),
@@ -98,7 +98,7 @@ public class BikeRepositoryImpl implements IBikeRepository {
 	@Override
 	public List<BikeDetails> findAllByStatus(boolean status) {
 
-		String sql = "SELECT bike_number, manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details WHERE verification_status = ? AND market_status != 'BOOKED'";
+		String sql = "SELECT md.bike_number, md.manufacturer_id, bm.manufacturer, model, color, price, odometer_reading, manufacture_year, md.added_date, market_status FROM motorcycle_details md , bike_manufacturer bm WHERE md.manufacturer_id= bm.id and verification_status = ? AND market_status != 'BOOKED'";
 		List<BikeDetails> bikeList = jdbcTemplate.query(sql, new BikeRowMapper(), status);
 		return bikeList;
 	}

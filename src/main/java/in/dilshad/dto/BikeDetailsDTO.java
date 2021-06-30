@@ -24,10 +24,15 @@ public class BikeDetailsDTO {
 	@Size(min = 11, max = 14, message = "Bike number should be in correct format")
 	private String bikeNumber;
 
+	// @NotNull
+	// @NotEmpty(message = "Bike manufacturer name cannot be empty")
+	// @Size(min = 2, max = 30, message = "Name must be between 3 and 20
+	// characters")
+	// private String bikeManufacturer;
+
 	@NotNull
-	@NotEmpty(message = "Bike manufacturer name cannot be empty")
-	@Size(min = 2, max = 30, message = "Name must be between 3 and 20 characters")
-	private String bikeManufacturer;
+	// @NotEmpty(message = "Bike manufacturer name cannot be empty")
+	private Integer manufacturerId;
 
 	@NotNull
 	@NotEmpty(message = "Bike model name cannot be empty")

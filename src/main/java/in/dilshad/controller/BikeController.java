@@ -50,7 +50,8 @@ public class BikeController {
 
 		EngineDetails engineDetails = new EngineDetails(bikeDetailsDTO.getOdometerReading(),
 				bikeDetailsDTO.getFuelType(), bikeDetailsDTO.getManufactureYear());
-		BikeDetails bikeDetails = new BikeDetails(bikeDetailsDTO.getBikeNumber(), bikeDetailsDTO.getBikeManufacturer(),
+		BikeDetails bikeDetails = new BikeDetails(bikeDetailsDTO.getBikeNumber(),
+				bikeDetailsDTO.getManufacturerId(),
 				bikeDetailsDTO.getBikeModel(), bikeDetailsDTO.getBikeColor(), bikeDetailsDTO.getBikePrice(),
 				engineDetails);
 

@@ -18,6 +18,7 @@ public class BikeRowMapper implements RowMapper<BikeDetails> {
 
 		BikeDetails bikeDetails = new BikeDetails();
 		bikeDetails.setBikeNumber(rs.getString("bike_number"));
+		bikeDetails.setManufacturerId(rs.getInt("manufacturer_id"));
 		bikeDetails.setBikeManufacturer(rs.getString("manufacturer"));
 		bikeDetails.setBikeModel(rs.getString("model"));
 		bikeDetails.setBikeColor(rs.getString("color"));
