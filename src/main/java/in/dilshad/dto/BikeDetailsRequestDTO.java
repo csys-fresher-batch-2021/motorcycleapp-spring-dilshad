@@ -4,7 +4,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import in.dilshad.constants.FuelTypeEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,21 +16,14 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class BikeDetailsDTO {
+public class BikeDetailsRequestDTO {
 
 	@NotNull
 	@NotEmpty(message = "Bike Plate number cannot be empty")
 	@Size(min = 11, max = 14, message = "Bike number should be in correct format")
 	private String bikeNumber;
 
-	// @NotNull
-	// @NotEmpty(message = "Bike manufacturer name cannot be empty")
-	// @Size(min = 2, max = 30, message = "Name must be between 3 and 20
-	// characters")
-	// private String bikeManufacturer;
-
 	@NotNull
-	// @NotEmpty(message = "Bike manufacturer name cannot be empty")
 	private Integer manufacturerId;
 
 	@NotNull
@@ -50,7 +42,7 @@ public class BikeDetailsDTO {
 	@NotNull
 	private Integer odometerReading;
 
-	private FuelTypeEnum fuelType;
+	private Integer fuelId;
 
 	@NotNull
 	private Integer manufactureYear;

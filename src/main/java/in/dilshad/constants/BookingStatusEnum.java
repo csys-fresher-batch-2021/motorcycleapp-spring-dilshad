@@ -2,5 +2,5 @@ package in.dilshad.constants;
 
 
 public enum BookingStatusEnum {
-	BOOKED, RESERVED, AVAILABLE, NOT;
+	BOOKED, RESERVED, AVAILABLE, NOTVERIFIED;
 }

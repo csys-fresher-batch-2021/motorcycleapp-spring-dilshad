@@ -3,7 +3,6 @@ package in.dilshad.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.dilshad.dto.BikeDetailsDTO;
+import in.dilshad.dto.BikeDetailsRequestDTO;
 import in.dilshad.dto.Message;
 import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
@@ -31,32 +30,34 @@ import in.dilshad.service.BikeService;
  *
  */
 @RestController
-@RequestMapping("motorcycleapp/v1/auth/bike")
+@RequestMapping("motorcycleapp/v1/bike")
 public class BikeController {
 
 	@Autowired
 	BikeService bikeService;
 
 	/**
-	 * Accepts bike specifications and passes it to service layer
+	 * Accepts bike specifications and mail ID of the owner and passes it to service
+	 * layer
 	 *
-	 * url: http://localhost:9000/motorcycleapp/v1/auth/bike/add
+	 * url: http://localhost:9000/motorcycleapp/v1/bike/add/abc@gmail.com
 	 *
 	 * @param bikeDetailsDTO
 	 * @return
 	 */
-	@PostMapping("add")
-	public ResponseEntity<?> addBike(@Valid @RequestBody BikeDetailsDTO bikeDetailsDTO) {
+	@PostMapping("add/{emailId}")
+	public ResponseEntity<?> addBike(@Valid @RequestBody BikeDetailsRequestDTO bikeDetailsDTO,
+			@PathVariable("emailId") String emailId) {
 
 		EngineDetails engineDetails = new EngineDetails(bikeDetailsDTO.getOdometerReading(),
-				bikeDetailsDTO.getFuelType(), bikeDetailsDTO.getManufactureYear());
+				bikeDetailsDTO.getFuelId(), bikeDetailsDTO.getManufactureYear());
 		BikeDetails bikeDetails = new BikeDetails(bikeDetailsDTO.getBikeNumber(),
 				bikeDetailsDTO.getManufacturerId(),
 				bikeDetailsDTO.getBikeModel(), bikeDetailsDTO.getBikeColor(), bikeDetailsDTO.getBikePrice(),
 				engineDetails);
 
 		try {
-			bikeService.addBike(bikeDetails);
+			bikeService.addBike(bikeDetails, emailId);
 			Message message = new Message();
 			message.setInfoMessage("Successfully added");
 			return new ResponseEntity<>(message, HttpStatus.OK);
@@ -83,6 +84,7 @@ public class BikeController {
 			BikeCount countOfBikes = bikeService.countBikes();
 			return new ResponseEntity<>(countOfBikes, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Message message = new Message();
 			message.setControllerMessage("Internal error");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -102,6 +104,7 @@ public class BikeController {
 			Float netAmount = bikeService.getBikeAssets();
 			return new ResponseEntity<>(netAmount, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Message message = new Message();
 			message.setControllerMessage("Internal error");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -124,6 +127,7 @@ public class BikeController {
 			List<BikeDetails> bikeList = bikeService.getAllBikes(status);
 			return new ResponseEntity<>(bikeList, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Message message = new Message();
 			message.setControllerMessage("Unable to fetch Bike Details");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -148,7 +152,7 @@ public class BikeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Message message = new Message();
-			message.setErrorMessage("Unable to fetch Bike Details");
+			message.setErrorMessage(e.getMessage());
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -175,6 +179,7 @@ public class BikeController {
 				return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			Message message = new Message();
 			message.setControllerMessage("Unable to process your request");
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -193,17 +198,31 @@ public class BikeController {
 	 */
 	@PatchMapping("{bikeNumber}/update-price")
 	public ResponseEntity<?> updatePrice(@PathVariable("bikeNumber") String bikeNumber,
-			@RequestBody BikeDetailsDTO bikeDetailsDTO) {
+			@RequestBody BikeDetailsRequestDTO bikeDetailsDTO) {
 		try {
 			bikeService.updatePrice(bikeNumber, bikeDetailsDTO.getBikePrice());
 			Message message = new Message();
 			message.setInfoMessage("Successfully updated the price");
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Message message = new Message();
-			message.setControllerMessage(" Bike number not found");
+			message.setControllerMessage("Bike number not found");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
 
+	}
+
+	@PatchMapping("{bikeNumber}/change-to-verified")
+	public ResponseEntity<?> verify(@PathVariable("bikeNumber") String bikeNumber) {
+		boolean isVerified = bikeService.updateBikeVerificationStatustoTrue(bikeNumber);
+		Message message = new Message();
+		if (isVerified) {
+			message.setInfoMessage("Updated successfully");
+			return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
+		} else {
+			message.setErrorMessage("Not updated");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}
 	}
 }

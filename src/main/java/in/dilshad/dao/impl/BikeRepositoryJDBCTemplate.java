@@ -1,5 +1,8 @@
 package in.dilshad.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import in.dilshad.dao.BikeRowMapper;
 import in.dilshad.dao.IBikeRepository;
+import in.dilshad.exceptions.DBException;
 import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 
@@ -20,7 +24,7 @@ import in.dilshad.model.BikeDetails;
  *
  */
 @Repository
-public class BikeRepositoryImpl implements IBikeRepository {
+public class BikeRepositoryJDBCTemplate implements IBikeRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -30,19 +34,34 @@ public class BikeRepositoryImpl implements IBikeRepository {
 	 *
 	 * @param bikeDetails
 	 * @return
+	 * @throws SQLException
 	 */
 	@Override
-	public boolean save(BikeDetails bikeDetails) {
-		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer_id, model, color, price, odometer_reading, fuel_type, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public boolean save(BikeDetails bikeDetails, String emailId) throws SQLException {
+		System.err.println("START TO ADD");
+		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer_id, model, color, price, odometer_reading, fuel_id, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { bikeDetails.getBikeNumber(), bikeDetails.getManufacturerId(), bikeDetails.getBikeModel(),
 				bikeDetails.getBikeColor(), bikeDetails.getBikePrice(),
-				bikeDetails.getEngineDetails().getOdometerReading(),
-				bikeDetails.getEngineDetails().getFuelType().toString(),
+				bikeDetails.getEngineDetails().getOdometerReading(), bikeDetails.getEngineDetails().getFuelId(),
 				bikeDetails.getEngineDetails().getManufactureYear(), bikeDetails.getBikeStatus().getAddedDate(),
 				bikeDetails.getBikeStatus().isAdminVerified(),
 				bikeDetails.getBikeStatus().getBookingStatus().toString() };
-
 		int rows = jdbcTemplate.update(sql, params);
+
+		// bike_owner_mapper - TABLE
+
+		final String procedureCall = "Insert into bike_owner_mapper (bike_number, owner_email) values (?,?)";// ('TN-45-W-2385',
+
+		boolean result = false;
+		try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+			PreparedStatement pst = connection.prepareStatement(procedureCall);
+			pst.setString(1, bikeDetails.getBikeNumber());
+			pst.setString(2, emailId);
+			result = pst.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return rows == 1;
 	}
 
@@ -64,10 +83,10 @@ public class BikeRepositoryImpl implements IBikeRepository {
 		String sql2 = "SELECT COUNT(bike_number) FROM motorcycle_details WHERE verification_status = false";
 		bikeCount.setYetToVerifyBike(jdbcTemplate.queryForObject(sql2, Integer.class));
 
-		String sql3 = "SELECT COUNT(bike_number) FROM motorcycle_details WHERE verification_status = true AND market_status != 'BOOKED' AND fuel_type = 'PETROL'";
+		String sql3 = "SELECT COUNT(bike_number) FROM motorcycle_details WHERE verification_status = true AND market_status != 'BOOKED' AND fuel_Id = 1";
 		bikeCount.setPetrolBike(jdbcTemplate.queryForObject(sql3, Integer.class));
 
-		String sql4 = "SELECT COUNT(bike_number) FROM motorcycle_details WHERE verification_status = true AND market_status != 'BOOKED' AND fuel_type = 'ELECTRIC'";
+		String sql4 = "SELECT COUNT(bike_number) FROM motorcycle_details WHERE verification_status = true AND market_status != 'BOOKED' AND fuel_Id = 2";
 		bikeCount.setElectricBike(jdbcTemplate.queryForObject(sql4, Integer.class));
 
 		String sql5 = "SELECT COUNT(bike_number) FROM motorcycle_details WHERE market_status = 'BOOKED'";
@@ -98,8 +117,10 @@ public class BikeRepositoryImpl implements IBikeRepository {
 	@Override
 	public List<BikeDetails> findAllByStatus(boolean status) {
 
-		String sql = "SELECT md.bike_number, md.manufacturer_id, bm.manufacturer, model, color, price, odometer_reading, manufacture_year, md.added_date, market_status FROM motorcycle_details md , bike_manufacturer bm WHERE md.manufacturer_id= bm.id and verification_status = ? AND market_status != 'BOOKED'";
+		String sql = "SELECT md.bike_number, md.manufacturer_id, ft.name, bm.manufacturer, model, color, price, odometer_reading, manufacture_year, md.added_date, market_status FROM motorcycle_details md , bike_manufacturer bm, fuel_type ft WHERE md.manufacturer_id= bm.id AND md.fuel_id = ft.id AND verification_status = ? AND market_status != 'BOOKED'";
 		List<BikeDetails> bikeList = jdbcTemplate.query(sql, new BikeRowMapper(), status);
+		// List<BikeDetails> bikeList1 = jdbcTemplate.query(sql,
+		// BeanPropertyRowMapper.newInstance(BikeDetails.class), status);
 		return bikeList;
 	}
 
@@ -109,12 +130,19 @@ public class BikeRepositoryImpl implements IBikeRepository {
 	 *
 	 * @param bikeNumber
 	 * @return
+	 * @throws DBException
 	 */
 	@Override
-	public BikeDetails findByBikeNumber(String bikeNumber) {
-		String sql = "SELECT bike_number, manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details WHERE bike_number = ? AND market_status != 'BOOKED' AND verification_status = true";
+	public BikeDetails findByBikeNumber(String bikeNumber) throws DBException {
+
+		String sql1 = "SELECT bike_number, manufacturer_id, bm.manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details md INNER JOIN bike_manufacturer bm ON md.manufacturer_id = bm.id WHERE verification_status = true AND market_status != 'BOOKED' AND bike_number= ?";
 		BikeDetails bikeDetails = null;
-		bikeDetails = jdbcTemplate.queryForObject(sql, new BikeRowMapper(), bikeNumber);
+		try {
+			bikeDetails = jdbcTemplate.queryForObject(sql1, new BikeRowMapper(), bikeNumber);
+		} catch (DataAccessException e) {
+			throw new DBException(e, "Record not found");
+		}
+
 		return bikeDetails;
 	}
 
@@ -145,6 +173,19 @@ public class BikeRepositoryImpl implements IBikeRepository {
 	public boolean updatePrice(String bikeNumber, float revisedPrice) {
 		String sql = "UPDATE motorcycle_details SET price = ? WHERE bike_number = ?";
 		int rows = jdbcTemplate.update(sql, revisedPrice, bikeNumber);
+		return rows == 1 ? true : false;
+	}
+
+	/**
+	 * Updates the status of bike from false to true.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	@Override
+	public boolean updateBikeStatus(String bikeNumber) {
+		String sql = "UPDATE motorcycle_details SET verification_status = true WHERE bike_number = ?";
+		int rows = jdbcTemplate.update(sql, bikeNumber);
 		return rows == 1 ? true : false;
 	}
 }

@@ -1,22 +1,26 @@
 package in.dilshad.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 
+import in.dilshad.exceptions.DBException;
 import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 
 public interface IBikeRepository {
 
 	/**
-	 * Inserts the bike specification into the database.
+	 * Inserts the bike specification into the database. It also maps the bike
+	 * number & mail ID of the corresponding owner in seperate table
 	 *
 	 * @param bikeDetails
 	 * @return
+	 * @throws SQLException
 	 */
-	boolean save(BikeDetails bikeDetails);
+	boolean save(BikeDetails bikeDetails, String emailId) throws SQLException;
 
 	/**
 	 * Return the count of bikes.
@@ -51,8 +55,9 @@ public interface IBikeRepository {
 	 *
 	 * @param bikeNumber
 	 * @return
+	 * @throws DBException
 	 */
-	BikeDetails findByBikeNumber(String bikeNumber);
+	BikeDetails findByBikeNumber(String bikeNumber) throws DBException;
 
 	/**
 	 * Gets bike number and removes the corresponding record for the when valid bike
@@ -74,4 +79,11 @@ public interface IBikeRepository {
 	 */
 	boolean updatePrice(String bikeNumber, float revisedPrice);
 
+	/**
+	 * Updates the status of bike from false to true.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	boolean updateBikeStatus(String bikeNumber);
 }

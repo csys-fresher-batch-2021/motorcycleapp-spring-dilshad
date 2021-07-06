@@ -1,6 +1,5 @@
 package in.dilshad.model;
 
-import in.dilshad.constants.FuelTypeEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,14 +10,16 @@ public class EngineDetails {
 
 	private Integer odometerReading;
 
-	private FuelTypeEnum fuelType;
+	private Integer fuelId;
+
+	private String fuelType;
 
 	private Integer manufactureYear;
 
-	public EngineDetails(Integer odometerReading, FuelTypeEnum fuelType, Integer manufactureYear) {
+	public EngineDetails(Integer odometerReading, Integer fuelType, Integer manufactureYear) {
 		super();
 		this.odometerReading = odometerReading;
-		this.fuelType = fuelType;
+		this.fuelId = fuelType;
 		this.manufactureYear = manufactureYear;
 	}
 

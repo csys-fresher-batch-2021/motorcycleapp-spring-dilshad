@@ -18,21 +18,20 @@ public class BikeRowMapper implements RowMapper<BikeDetails> {
 
 		BikeDetails bikeDetails = new BikeDetails();
 		bikeDetails.setBikeNumber(rs.getString("bike_number"));
-		bikeDetails.setManufacturerId(rs.getInt("manufacturer_id"));
 		bikeDetails.setBikeManufacturer(rs.getString("manufacturer"));
 		bikeDetails.setBikeModel(rs.getString("model"));
 		bikeDetails.setBikeColor(rs.getString("color"));
 		bikeDetails.setBikePrice(rs.getFloat("price"));
+		bikeDetails.setManufacturerId(rs.getInt("manufacturer_id"));
 
 		EngineDetails enginedetails = new EngineDetails();
 		enginedetails.setManufactureYear(rs.getInt("manufacture_year"));
 		enginedetails.setOdometerReading(rs.getInt("odometer_reading"));
-
+		// enginedetails.setFuelType(rs.getString("name"));
 		BikeStatus bikeStatus = new BikeStatus();
 		Date date = rs.getDate("added_date");
 		LocalDate localDate = date.toLocalDate();
 		bikeStatus.setAddedDate(localDate);
-		// bikeStatus.setBookingStatus(rs.getString("market_status"));
 
 		bikeDetails.setEngineDetails(enginedetails);
 		bikeDetails.setBikeStatus(bikeStatus);

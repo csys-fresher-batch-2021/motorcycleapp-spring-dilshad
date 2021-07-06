@@ -14,8 +14,8 @@
 		</header>
 		<a href="memberRegistration.jsp">Registration Form</a><br /> <a
 			href="displayByBikeNo.jsp">Get bike details by bike no.</a><br/>
-			<a href="listActiveBikes.html">Get list of available bikes</a>
-			
+			<a href="listActiveBikes.html">Get list of available bikes</a><br/>
+				<a href="netAsset.jsp">Get current Asset</a>
 			
 		<article class="column">
 			<h3>About us</h3>

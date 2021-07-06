@@ -1,5 +1,6 @@
 package in.dilshad.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.dilshad.constants.BookingStatusEnum;
+import in.dilshad.dao.DAOFactory;
 import in.dilshad.dao.IBikeRepository;
+import in.dilshad.exceptions.DBException;
 import in.dilshad.model.BikeCount;
 import in.dilshad.model.BikeDetails;
 import in.dilshad.model.BikeStatus;
@@ -26,19 +29,20 @@ public class BikeService {
 	IBikeRepository bikeRepository;
 
 	/**
-	 * It accepts basic bike details and adds few default values and passes to DAO
-	 * layer.
+	 * It accepts basic bike details, mail ID of owner and adds few default values
+	 * and passes to DAO layer.
 	 *
 	 * @param bikeDetails
 	 * @return
+	 * @throws SQLException
 	 */
-	public boolean addBike(BikeDetails bikeDetails) {
+	public boolean addBike(BikeDetails bikeDetails, String emailId) throws SQLException {
 		BikeStatus bikeStatus = new BikeStatus();
 		bikeStatus.setAddedDate(LocalDate.now());
 		bikeStatus.setAdminVerified(false);
-		bikeStatus.setBookingStatus(BookingStatusEnum.NOT);
+		bikeStatus.setBookingStatus(BookingStatusEnum.NOTVERIFIED);
 		bikeDetails.setBikeStatus(bikeStatus);
-		return bikeRepository.save(bikeDetails);
+		return bikeRepository.save(bikeDetails, emailId);
 	}
 
 	/**
@@ -76,8 +80,10 @@ public class BikeService {
 	 *
 	 * @param bikeNumber
 	 * @return
+	 * @throws DBException
 	 */
-	public BikeDetails getByBikeNumber(String bikeNumber) {
+	public BikeDetails getByBikeNumber(String bikeNumber) throws DBException {
+
 		return bikeRepository.findByBikeNumber(bikeNumber);
 	}
 
@@ -104,5 +110,15 @@ public class BikeService {
 		boolean isUpdated = bikeRepository.updatePrice(bikeNumber, revisedPrice);
 		if (!isUpdated)
 			throw new Exception();
+	}
+
+	/**
+	 * Updates the status of bike from false to true.
+	 *
+	 * @param bikeNumber
+	 * @return
+	 */
+	public boolean updateBikeVerificationStatustoTrue(String bikeNumber) {
+		return bikeRepository.updateBikeStatus(bikeNumber);
 	}
 }
