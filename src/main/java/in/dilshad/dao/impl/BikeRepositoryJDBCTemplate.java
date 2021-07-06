@@ -38,7 +38,6 @@ public class BikeRepositoryJDBCTemplate implements IBikeRepository {
 	 */
 	@Override
 	public boolean save(BikeDetails bikeDetails, String emailId) throws SQLException {
-		System.err.println("START TO ADD");
 		String sql = "INSERT INTO motorcycle_details (bike_number, manufacturer_id, model, color, price, odometer_reading, fuel_id, manufacture_year, added_date, verification_status, market_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { bikeDetails.getBikeNumber(), bikeDetails.getManufacturerId(), bikeDetails.getBikeModel(),
 				bikeDetails.getBikeColor(), bikeDetails.getBikePrice(),
@@ -50,14 +49,13 @@ public class BikeRepositoryJDBCTemplate implements IBikeRepository {
 
 		// bike_owner_mapper - TABLE
 
-		final String procedureCall = "Insert into bike_owner_mapper (bike_number, owner_email) values (?,?)";// ('TN-45-W-2385',
+		final String procedureCall = "Insert into bike_owner_mapper (bike_number, owner_email) values (?,?)";
 
-		boolean result = false;
 		try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
 			PreparedStatement pst = connection.prepareStatement(procedureCall);
 			pst.setString(1, bikeDetails.getBikeNumber());
 			pst.setString(2, emailId);
-			result = pst.execute();
+			pst.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -102,7 +100,7 @@ public class BikeRepositoryJDBCTemplate implements IBikeRepository {
 	 */
 	@Override
 	public float getAsset() throws DbActionExecutionException {
-		String sql = "SELECT SUM(price) FROM motorcycle_details WHERE market_status != 'BOOKED' AND verification_status = 'true'";
+		String sql = "SELECT get_active_asset()";
 		return jdbcTemplate.queryForObject(sql, Float.class);
 	}
 
