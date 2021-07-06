@@ -135,7 +135,7 @@ public class BikeRepositoryJDBCTemplate implements IBikeRepository {
 	@Override
 	public BikeDetails findByBikeNumber(String bikeNumber) throws DBException {
 
-		String sql1 = "SELECT bike_number, manufacturer_id, bm.manufacturer, model, color, price, odometer_reading, manufacture_year, added_date, market_status FROM motorcycle_details md INNER JOIN bike_manufacturer bm ON md.manufacturer_id = bm.id WHERE verification_status = true AND market_status != 'BOOKED' AND bike_number= ?";
+		String sql1 = "SELECT bike_number, manufacturer_id, manufacturer, model, color, price, odometer_reading, fuel_id, manufacture_year, added_date, market_status FROM vw_bike_details WHERE bike_number= ?";
 		BikeDetails bikeDetails = null;
 		try {
 			bikeDetails = jdbcTemplate.queryForObject(sql1, new BikeRowMapper(), bikeNumber);

@@ -27,7 +27,7 @@ public class BikeRowMapper implements RowMapper<BikeDetails> {
 		EngineDetails enginedetails = new EngineDetails();
 		enginedetails.setManufactureYear(rs.getInt("manufacture_year"));
 		enginedetails.setOdometerReading(rs.getInt("odometer_reading"));
-		// enginedetails.setFuelType(rs.getString("name"));
+		enginedetails.setFuelId(rs.getInt("fuel_id"));
 		BikeStatus bikeStatus = new BikeStatus();
 		Date date = rs.getDate("added_date");
 		LocalDate localDate = date.toLocalDate();
