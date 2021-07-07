@@ -1,7 +1,8 @@
 package in.dilshad.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import in.dilshad.dao.MemberRepository;
@@ -51,6 +52,8 @@ public class MemberService {
 				.findByEmailAndPassword(memberDetails.getEmail(), memberDetails.getPassword()).orElse(null);
 		if (details == null)
 			throw new InvalidLoginException("Invalid email/password");
+		else
+			memberRepository.updateLoginTime(details.getEmail(), LocalDate.now());
 		return details;
 	}
 }

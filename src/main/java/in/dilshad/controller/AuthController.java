@@ -66,7 +66,6 @@ public class AuthController {
 	 */
 	@PostMapping("login")
 	public ResponseEntity<?> login1(@RequestBody MemberDTO loginDto) {
-
 		try {
 			MemberDetails memberDetails = new MemberDetails(loginDto.getEmail(), loginDto.getRole(),
 					loginDto.getPassword());
@@ -74,7 +73,7 @@ public class AuthController {
 			return new ResponseEntity<>(details, HttpStatus.OK);
 		} catch (Exception e) {
 			Message message = new Message();
-			message.setControllerMessage(e.getMessage());
+			message.setErrorMessage(e.getMessage());
 			return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
 		}
 
